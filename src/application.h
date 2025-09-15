@@ -2,8 +2,8 @@
 
 
 
-class Application {
+class Game {
 
 public:
-	void run();
+	int run();
 };

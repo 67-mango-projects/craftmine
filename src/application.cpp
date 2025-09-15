@@ -4,7 +4,7 @@
 #include <glew.h>
 #include <glfw3.h>
 
-bool Application::run() {
+int Game::run() {
     if (!glfwInit()) {
         printf("could not iniitialize glfw\n");
         return EXIT_FAILURE;

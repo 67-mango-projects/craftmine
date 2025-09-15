@@ -1,13 +1,7 @@
-﻿
-#include<iostream>
-#include <glew.h>
-#include <glfw3.h>
-
-#include "application.h"
+﻿#include "application.h"
 
 int main()
 {
-	Application a;
-	
-	return 0;
+	Game a;
+	return a.run();
 }

@@ -10,7 +10,7 @@ if (POLICY CMP0141)
 endif()
 
 project (craftmine_project)
-add_executable (craftmine "src/main" "src/application.h" "src/renderer/Buffer.h" "src/renderer/IndexBuffer.h" "src/renderer/IndexBuffer.cpp" "src/renderer/Renderer.h")
+add_executable (craftmine "src/main" "src/application.cpp" "src/application.h" "src/renderer/Buffer.h" "src/renderer/IndexBuffer.h" "src/renderer/IndexBuffer.cpp" "src/renderer/Renderer.h" "src/renderer/Renderer.cpp" "src/renderer/VertexArray.cpp" "src/renderer/VertexArray.h" "src/renderer/VertexBuffer.h" "src/renderer/VertexBuffer.cpp" "src/renderer/VertexBufferLayout.h")
 target_include_directories(craftmine PRIVATE "${CMAKE_SOURCE_DIR}/dependencies/GLFW" PRIVATE "${CMAKE_SOURCE_DIR}/dependencies/GLEW")
 target_link_libraries(craftmine 
 	PRIVATE "${CMAKE_SOURCE_DIR}/dependencies/GLEW/glew32s.lib"
