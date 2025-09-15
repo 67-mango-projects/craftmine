@@ -24,6 +24,9 @@ add_executable(craftmine
         "src/renderer/VertexBuffer.h"
         "src/renderer/VertexBuffer.cpp"
         "src/renderer/VertexBufferLayout.h"
+        src/save/SaveSystem.cpp
+        src/save/SaveSystem.h
+        src/save/SaveSystem.h
 )
 target_include_directories(craftmine PRIVATE "${CMAKE_SOURCE_DIR}/dependencies/GLFW" PRIVATE "${CMAKE_SOURCE_DIR}/dependencies/GLEW" , PRIVATE "${CMAKE_SOURCE_DIR}/dependencies" , PRIVATE "${CMAKE_SOURCE_DIR}/dependencies/spdlog")
 target_link_libraries(craftmine
