@@ -2,7 +2,7 @@
 #include <spdlog.h>
 #include <sinks/stdout_color_sinks.h>
 #include <sinks/basic_file_sink.h>
-#include "application.h"
+#include "game.h"
 
 /**
  * Set up the global logger using spdlog.
@@ -57,6 +57,6 @@ int main()
 	enable_virtual_terminal_processing();
 	setup_logger();
 
-	Application a;
+	Game a;
 	return a.run();
 }

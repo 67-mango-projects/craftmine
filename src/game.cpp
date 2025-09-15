@@ -1,4 +1,4 @@
-#include "application.h"
+#include "game.h"
 #include<iostream>
 
 #include <glew.h>
