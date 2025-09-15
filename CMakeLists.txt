@@ -11,7 +11,7 @@ endif()
 
 project (craftmine_project)
 add_executable (craftmine "src/main" "src/application.h" "src/renderer/Buffer.h" "src/renderer/IndexBuffer.h" "src/renderer/IndexBuffer.cpp" "src/renderer/Renderer.h")
-target_include_directories(craftmine PRIVATE "${CMAKE_SOURCE_DIR}/dependencies/GLFW" PRIVATE "${CMAKE_SOURCE_DIR}/dependencies/GLEW")
+target_include_directories(craftmine PRIVATE "${CMAKE_SOURCE_DIR}/dependencies/GLFW" PRIVATE "${CMAKE_SOURCE_DIR}/dependencies/GLEW", PRIVATE "${CMAKE_SOURCE_DIR}/dependencies", PRIVATE "${CMAKE_SOURCE_DIR}/dependencies/spdlog")
 target_link_libraries(craftmine 
 	PRIVATE "${CMAKE_SOURCE_DIR}/dependencies/GLEW/glew32s.lib"
 	PRIVATE "${CMAKE_SOURCE_DIR}/dependencies/GLFW/glfw3.lib"
