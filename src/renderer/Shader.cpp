@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <spdlog.h>
 enum class ShaderType {
     NONE = -1,
     VERTEX = 0,
@@ -17,7 +18,7 @@ int Shader::compileShader(GLenum type, const std::string& source) {
     glCall(glCompileShader(shader_id));
 
     int result;
-    glGetShaderiv(shader_id, GL_COMPILE_STATUS, &result);
+    glCall(glGetShaderiv(shader_id, GL_COMPILE_STATUS, &result));
 
 
     if (result == GL_FALSE) {
@@ -39,6 +40,9 @@ int Shader::compileShader(GLenum type, const std::string& source) {
     return shader_id;
 }
 
+Shader::~Shader() {
+    glCall(glDeleteProgram(m_renderId));
+}
 
 Shader::Shader(const std::string& filepath) {
 	std::ifstream stream(filepath);
@@ -75,12 +79,24 @@ Shader::Shader(const std::string& filepath) {
     //glDetachShader(opengl_program, fragment_shader);
     //glDetachShader(opengl_program, vertex_shader);
 
-    glDeleteShader(vertex_shader);
-    glDeleteShader(fragment_shader);
+    glCall(glDeleteShader(vertex_shader));
+    glCall(glDeleteShader(fragment_shader));
 
     m_renderId = opengl_program;
-
+    m_filePath = filepath;
     
+}
+unsigned int Shader::getUniformLocation(const std::string& name) {
+    glCall(unsigned int location = glGetUniformLocation(m_renderId, name.c_str()));
+    if (location == -1) {
+        spdlog::error("could not find uniform, {}", name.c_str());
+    }
+    return location;
+}
+template<>
+ void Shader::setUniform4<float>(const std::string& name,
+    float x, float y, float z, float w) {
+    glCall(glUniform4f(getUniformLocation(name), x, y, z, w));
 }
 
 void Shader::bind() const {

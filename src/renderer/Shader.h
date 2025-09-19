@@ -8,9 +8,10 @@ struct ShaderProgramSource {
 
 class Shader : Buffer {
 private:
-	std::string filePath;
+	std::string m_filePath;
 public:
 	Shader(const std::string& filepath);
+	~Shader();
 	void bind() const;
 	void unbind() const;
 

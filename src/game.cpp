@@ -8,88 +8,7 @@
 
 #include "renderer/VertexArray.h"
 #include "renderer/IndexBuffer.h"
-
-struct ShaderProgramSource {
-    std::string VertexSource;
-    std::string FragmentSource;
-};
-
-static ShaderProgramSource ParseShader(const std::string& filepath) {
-    std::ifstream stream(filepath);
-
-    enum class ShaderType {
-        NONE = -1,
-        VERTEX = 0,
-        FRAGMENT = 1
-    };
-
-    std::string line;
-    std::stringstream ss[2];
-
-    ShaderType type = ShaderType::NONE;
-
-    while (std::getline(stream, line)) {
-
-        if (line.find("#shader") != std::string::npos) {
-            if (line.find("vertex") != std::string::npos) {
-                type = ShaderType::VERTEX;
-            }
-            else if (line.find("fragment") != std::string::npos) {
-                type = ShaderType::FRAGMENT;
-            }
-        }
-        else {
-            ss[(int)type] << line << '\n';
-        }
-    }
-    return { ss[0].str(),ss[1].str() };
-}
-
-static GLuint CompileShader(GLenum type, const std::string& source) {
-    GLuint shader_id = glCreateShader(type);
-    const char* c_source = source.c_str();
-    glShaderSource(shader_id, 1, &c_source, nullptr);
-    glCompileShader(shader_id);
-
-    int result;
-    glGetShaderiv(shader_id, GL_COMPILE_STATUS, &result);
-
-
-    if (result == GL_FALSE) {
-        int length;
-        glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &length);
-        char* message = new char;
-        glGetShaderInfoLog(shader_id, length, &length, message);
-        printf("failed to compile %s shader\n%s\n", (type == GL_VERTEX_SHADER ? "vertex" : "fragment"), message);
-        glDeleteShader(shader_id);
-        return 0;
-
-    }
-
-    // TODO: error handling
-
-    return shader_id;
-}
-
-static GLuint CreateShader(const std::string& vertexshader, const std::string& fragmentshader) {
-    GLuint opengl_program = glCreateProgram();
-    GLuint vertex_shader = CompileShader(GL_VERTEX_SHADER, vertexshader);
-    GLuint fragment_shader = CompileShader(GL_FRAGMENT_SHADER, fragmentshader);
-
-    glAttachShader(opengl_program, vertex_shader);
-    glAttachShader(opengl_program, fragment_shader);
-    glLinkProgram(opengl_program);
-    glValidateProgram(opengl_program);
-
-    //glDetachShader(opengl_program, fragment_shader);
-    //glDetachShader(opengl_program, vertex_shader);
-
-    glDeleteShader(vertex_shader);
-    glDeleteShader(fragment_shader);
-
-    return opengl_program;
-}
-
+#include "renderer/Shader.h"
 
 
 static void glfwError(int id, const char* description)
@@ -151,13 +70,9 @@ int Game::run() {
     };
     std::string shaderPath = "src/shaders/voxel.";
     
-    ShaderProgramSource source = ParseShader("shaders/voxel.glsl");
-    std::cout << source.VertexSource << '\n';
-    std::cout << source.FragmentSource << '\n';
-    
-    GLuint shader = CreateShader(source.VertexSource, source.FragmentSource);
-    glUseProgram(shader);
-
+    Shader shader("shaders/voxel.glsl");
+    shader.bind();
+        
     Quad q;
     VertexBuffer vb(q.data,sizeof(Quad::data));
     VertexArray vao;
