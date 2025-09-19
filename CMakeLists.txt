@@ -27,7 +27,7 @@ add_executable(craftmine
         src/save/SaveSystem.cpp
         src/save/SaveSystem.h
         src/save/SaveSystem.h
-)
+ "src/renderer/Shader.h" "src/renderer/Shader.cpp")
 target_include_directories(craftmine PRIVATE "${CMAKE_SOURCE_DIR}/dependencies/GLFW" PRIVATE "${CMAKE_SOURCE_DIR}/dependencies/GLEW" , PRIVATE "${CMAKE_SOURCE_DIR}/dependencies" , PRIVATE "${CMAKE_SOURCE_DIR}/dependencies/spdlog")
 target_link_libraries(craftmine
         PRIVATE "${CMAKE_SOURCE_DIR}/dependencies/GLEW/glew32s.lib"
@@ -35,7 +35,7 @@ target_link_libraries(craftmine
         opengl32.lib
 )
 target_compile_definitions(craftmine PRIVATE GLEW_STATIC)
-
+file(COPY ${CMAKE_SOURCE_DIR}/src/shaders DESTINATION ${CMAKE_BINARY_DIR})
 if (MSVC)
     target_compile_options(craftmine PRIVATE "/utf-8")
 endif ()
@@ -44,6 +44,7 @@ endif ()
 if (CMAKE_VERSION VERSION_GREATER 3.12)
     set_property(TARGET craftmine PROPERTY CXX_STANDARD 20)
 endif ()
+
 
 
 
