@@ -2,20 +2,29 @@
 #version 330 core
 
 layout(location = 0) in vec4 position;
-layout(location = 1) in vec3 acolor;
+layout(location = 1) in vec2 texCoord;
+layout(location = 2) in vec3 acolor;
+
 out vec3 trianglecolor;
+out vec2 v_texCoord;
 
 void main() {
-
    gl_Position = position;
    trianglecolor = acolor;
-};
+   v_texCoord = texCoord;
+
+}; 
 
 #shader fragment
 #version 330 core
 
+uniform sampler2D u_texture;
+uniform float u_opacity;
 out vec4 color;
 in vec3 trianglecolor;
+in vec2 v_texCoord;
+
 void main() {
-   color = vec4(trianglecolor,1.0);
+	vec4 texColor = texture(u_texture,v_texCoord);
+   color = texColor;
 };

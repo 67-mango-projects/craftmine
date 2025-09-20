@@ -5,6 +5,7 @@
 #include <sstream>
 #include <iostream>
 #include <spdlog.h>
+
 enum class ShaderType {
     NONE = -1,
     VERTEX = 0,
@@ -86,18 +87,32 @@ Shader::Shader(const std::string& filepath) {
     m_filePath = filepath;
     
 }
-unsigned int Shader::getUniformLocation(const std::string& name) {
-    glCall(unsigned int location = glGetUniformLocation(m_renderId, name.c_str()));
-    if (location == -1) {
-        spdlog::error("could not find uniform, {}", name.c_str());
+int Shader::getUniformLocation(const std::string& name) {
+
+    if (m_uniformLocationCache.find(name) != m_uniformLocationCache.end()) {
+        return m_uniformLocationCache[name];
     }
+
+    glCall(int location = glGetUniformLocation(m_renderId, name.c_str()));
+    if (location == -1) {
+        printf("could not find uniform, %s", name.c_str());
+    }
+    m_uniformLocationCache[name] = location;
     return location;
 }
-template<>
- void Shader::setUniform4<float>(const std::string& name,
+
+void Shader::setUniform1i(const std::string& name, int v1) {
+    glCall(glUniform1i(getUniformLocation(name), v1));
+}
+
+ void Shader::setUniform4f(const std::string& name,
     float x, float y, float z, float w) {
     glCall(glUniform4f(getUniformLocation(name), x, y, z, w));
 }
+
+ void Shader::setUniform1f(const std::string& name, float v1) {
+     glCall(glUniform1f(getUniformLocation(name), v1));
+ }
 
 void Shader::bind() const {
     glCall(glUseProgram(m_renderId));

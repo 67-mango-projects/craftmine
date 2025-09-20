@@ -13,5 +13,5 @@ public:
 	void bind() const override;
 	void unbind() const override;
 
-	inline unsigned int getCount() { return m_count; }
+	inline unsigned int getCount() const { return m_count; }
 };

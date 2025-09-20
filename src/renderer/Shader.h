@@ -1,5 +1,6 @@
 #include "Buffer.h"
 #include <string>
+#include<unordered_map>
 
 struct ShaderProgramSource {
 	std::string fragmentShader;
@@ -9,15 +10,17 @@ struct ShaderProgramSource {
 class Shader : Buffer {
 private:
 	std::string m_filePath;
+	std::unordered_map<std::string, int> m_uniformLocationCache;
 public:
 	Shader(const std::string& filepath);
 	~Shader();
 	void bind() const;
 	void unbind() const;
 
-	template<typename T>
-	void setUniform4(const std::string& name, T v1, T v2, T v3, T v4);
+	void setUniform4f(const std::string& name, float v1, float v2, float v3, float v4);
+	void setUniform1f(const std::string& name, float v1);
+	void setUniform1i(const std::string& name, int v1);
 private:
-	unsigned int getUniformLocation(const std::string& name);
+	int getUniformLocation(const std::string& name);
 	int compileShader(GLenum type /* Vertex or Fragment*/, const std::string& source);
 };
