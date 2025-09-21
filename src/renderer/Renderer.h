@@ -29,8 +29,12 @@ struct Vertex2 {
 };
 
 class Shader;
-class Renderer {    
+class Renderer {   
+private:
+    const Vector2 m_viewPortSize = Vector2(900, 900);
 public:
     void draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
     void clear() const;
+
+    inline Vector2 getViewPortSize() const { return m_viewPortSize; }
 };

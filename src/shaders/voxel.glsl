@@ -8,8 +8,10 @@ layout(location = 2) in vec3 acolor;
 out vec3 trianglecolor;
 out vec2 v_texCoord;
 
+uniform mat4 u_mvp;
+
 void main() {
-   gl_Position = position;
+   gl_Position = u_mvp * position;
    trianglecolor = acolor;
    v_texCoord = texCoord;
 

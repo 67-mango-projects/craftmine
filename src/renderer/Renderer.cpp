@@ -26,5 +26,5 @@ void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const Shader& 
 }
 
 void Renderer::clear() const {
-    glCall(glClear(GL_COLOR_BUFFER_BIT))
+    glCall(glClear(GL_COLOR_BUFFER_BIT));
 }
