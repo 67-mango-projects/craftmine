@@ -34,14 +34,13 @@ int Game::run() {
     Renderer renderer;
 
     Vector2 windowDimensions = renderer.getViewPortSize();
-    GLFWwindow* window = glfwCreateWindow(windowDimensions.x, windowDimensions.y, "arrushisbad", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(windowDimensions.x, windowDimensions.y, "gay gay gay game", NULL, NULL);
 
     if (!window)
     {
         printf("could not create window\n");
         glfwTerminate();
         return EXIT_FAILURE;
-        // Window or OpenGL context creation failed
     }
     glfwMakeContextCurrent(window);
 
@@ -87,11 +86,6 @@ int Game::run() {
         };
     };
 
-    glm::mat4 proj = glm::ortho(0.0f, windowDimensions.x, 0.0f, windowDimensions.y, -1.0f, 1.0f);
-    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(100.0f, 0, 0));
-    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(100.0f, 0, 0));
-
-    glm::mat4 mvp = proj * view * model;
 
     Shader shader("shaders/voxel.glsl");
     shader.bind();
@@ -108,12 +102,11 @@ int Game::run() {
     vbl.pushElement<float>(3, 0);
     vao.addBuffer(vb, vbl);
 
-    Texture tex("res/player.png");
+    Texture tex("res/textures.png");
     tex.bind();
 
     shader.setUniform1f("u_opacity", 0);
     shader.setUniform1i("u_texture", 0);
-    shader.setUniformMat4f("u_mvp", mvp);
 
     float opacity = 1;
     float inc = 0;
@@ -124,6 +117,17 @@ int Game::run() {
     while (!glfwWindowShouldClose(window)) {
         renderer.clear();
 
+        glm::mat4 proj = glm::ortho(0.0f, windowDimensions.x, 0.0f, windowDimensions.y, -1.0f, 1.0f);
+        glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(100.0f, 0, 0));
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(-200.0f, 0, 0));
+
+        glm::mat4 mvp = proj * view * model;
+        shader.setUniformMat4f("u_mvp", mvp);
+        renderer.draw(vao, ib, shader);
+
+        model = glm::translate(glm::mat4(1.0f), glm::vec3(200.0f, 0, 0));
+        mvp = proj * view * model;
+        shader.setUniformMat4f("u_mvp", mvp);
         renderer.draw(vao, ib, shader);
 
         if (opacity >= 1)
