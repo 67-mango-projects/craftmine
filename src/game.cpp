@@ -56,7 +56,7 @@ int Game::run() {
 
     struct Quad {
         Vector2 position = Vector2(300, 300);
-        Vector2 size = Vector2(100, 100);
+        Vector2 size = Vector2(50, 50);
 
         Vertex2 data[4] = {
             Vertex2(
