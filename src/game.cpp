@@ -56,8 +56,8 @@ int Game::run() {
 
     struct Quad {
         Vector2 position = Vector2(300, 300);
-        Vector2 size = Vector2(50, 50);
-
+        Vector2 size = Vector2(100, 100);
+        TextureFrame texture;
         Vertex2 data[4] = {
             Vertex2(
                 position.x - size.x, position.y + size.x, // pos
@@ -84,12 +84,29 @@ int Game::run() {
             0,1,2,
             2,3,1
         };
+        inline Quad(TextureFrame vtexture, Vector2 position, Vector2 size) {
+            texture = TextureFrame(vtexture);
+
+            data[0].position = { position.x - size.x, position.y + size.x }; // bottomleft
+            data[1].position = { position.x - size.x, position.y - size.x }; // topleft
+            data[2].position = { position.x + size.x, position.y + size.x }; // bottomright
+            data[3].position = { position.x + size.x, position.y - size.x }; // topright
+
+            data[0].texcoord = Vector2(texture.left, texture.bottom);
+            data[1].texcoord = Vector2(texture.left, texture.top);
+            data[2].texcoord = Vector2(texture.right, texture.bottom);
+            data[3].texcoord = Vector2(texture.right, texture.top);
+        }
     };
 
 
     Shader shader("shaders/voxel.glsl");
     shader.bind();
-    Quad q;
+    
+    Texture tex("res/textures.png", "res/textures.json");
+    tex.bind();
+
+    Quad q(tex.getTexture("aarush.png"), Vector2(300, 300), Vector2(100, 100));
 
     VertexBuffer vb(q.data,sizeof(Quad::data));
     VertexArray vao;
@@ -102,11 +119,8 @@ int Game::run() {
     vbl.pushElement<float>(3, 0);
     vao.addBuffer(vb, vbl);
 
-    Texture tex("res/textures.png");
-    tex.bind();
-
     shader.setUniform1f("u_opacity", 0);
-    shader.setUniform1i("u_texture", 0);
+    shader.setUniform1i("u_texture", 0); // tells opengl to bind to texture unit GL_TEXTURE0
 
     float opacity = 1;
     float inc = 0;

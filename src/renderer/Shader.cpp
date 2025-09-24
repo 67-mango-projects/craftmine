@@ -87,6 +87,8 @@ Shader::Shader(const std::string& filepath) {
     m_filePath = filepath;
     
 }
+
+
 int Shader::getUniformLocation(const std::string& name) {
 
     if (m_uniformLocationCache.find(name) != m_uniformLocationCache.end()) {
