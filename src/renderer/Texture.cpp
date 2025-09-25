@@ -2,6 +2,8 @@
 #include "Renderer.h"
 #include "stb_image.h"
 #include "nlohmann/json.hpp"
+#include "spdlog.h"
+
 #include <fstream>
 using json = nlohmann::json;
 
@@ -33,7 +35,7 @@ Texture::~Texture() {
 
 TextureFrame Texture::getTexture(const std::string& name) {
 	if (m_textures.find(name) == m_textures.end()) {
-		printf("could not find texture %s\n", name.c_str());
+		spdlog::error("could not find texture {}", name.c_str());
 		return TextureFrame();
 	}
 	return m_textures[name];
@@ -41,14 +43,13 @@ TextureFrame Texture::getTexture(const std::string& name) {
 
 void Texture::loadAtlas(const std::string& atlas) {
 	std::ifstream atlasFile(atlas);
-
+	spdlog::info("Loading Textures");
 	if (!atlasFile.is_open()) {
 		std::printf("failed to open json texture file %s\n", atlas.c_str());
 		return;
 	}
 	json j;
 	atlasFile >> j;
-
 	for (auto& [name, data] : j["frames"].items()) {
 		auto& f = data["frame"]; // shorthand
 
@@ -62,7 +63,7 @@ void Texture::loadAtlas(const std::string& atlas) {
 			u0,v0,u1,v1
 		);
 		m_textures[name] = t;
-		printf("Loaded %s\nUVLEFT =  %f\nUVRIGHT =  %f\nUVTOP =  %f\nUVBOTTOM =  %f\n", name.c_str(), t.left, t.right, t.top, t.bottom);
+		spdlog::debug("[texture] {}", name.c_str());
 
 	}
 }

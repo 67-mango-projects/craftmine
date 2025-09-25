@@ -12,16 +12,27 @@
 #include "renderer/Renderer.h"
 #include "renderer/VertexBufferLayout.h"
 #include "renderer/Texture.h"
-
+#include "core/Controller.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "spdlog.h"
+#include "core/Camera.h"
 
 static void glfwError(int id, const char* description)
 {
     printf("[!] opengl error \'%s\'\n", description);
 }
 
+void Game::updateStats() {
+    static double lastTime = 0.0;
+
+    double currentTime = glfwGetTime();
+    m_deltaTime = currentTime - lastTime;
+    lastTime = currentTime;
+}
+
 int Game::run() {
+    // INITIALIZATION START
     if (!glfwInit()) {
         printf("could not iniitialize glfw\n");
         return EXIT_FAILURE;
@@ -49,66 +60,28 @@ int Game::run() {
         return EXIT_FAILURE;
     }
 
-    printf("opengl version %s\n", glGetString(GL_VERSION));
-
-
-    
-
-    struct Quad {
-        Vector2 position = Vector2(300, 300);
-        Vector2 size = Vector2(100, 100);
-        TextureFrame texture;
-        Vertex2 data[4] = {
-            Vertex2(
-                position.x - size.x, position.y + size.x, // pos
-                0.0,1.0, // texture pos
-                1.0, 0, 0.0 // color
-            ), // 0
-            Vertex2(
-                 position.x - size.x, position.y - size.x,
-                0.0,0.0,
-                0.0, 0.0, 1.0
-            ),// 1
-            Vertex2(
-                 position.x + size.x, position.y + size.x,
-                1.0,1.0,
-                0.0, 1.0, 0
-            ), // 2
-            Vertex2(
-                 position.x + size.x, position.y - size.x,
-                1.0,0.0,
-                1.0, 1.0, 1.0
-            ) // 3
-        };
-        unsigned int indices[6]{
-            0,1,2,
-            2,3,1
-        };
-        inline Quad(TextureFrame vtexture, Vector2 position, Vector2 size) {
-            texture = TextureFrame(vtexture);
-
-            data[0].position = { position.x - size.x, position.y + size.x }; // bottomleft
-            data[1].position = { position.x - size.x, position.y - size.x }; // topleft
-            data[2].position = { position.x + size.x, position.y + size.x }; // bottomright
-            data[3].position = { position.x + size.x, position.y - size.x }; // topright
-
-            data[0].texcoord = Vector2(texture.left, texture.bottom);
-            data[1].texcoord = Vector2(texture.left, texture.top);
-            data[2].texcoord = Vector2(texture.right, texture.bottom);
-            data[3].texcoord = Vector2(texture.right, texture.top);
-        }
-    };
-
-
+    spdlog::info("opengl version {}", (const char*)glGetString(GL_VERSION));
+    Controller::initialize(window);
+    spdlog::debug("controller initialized");
     Shader shader("shaders/voxel.glsl");
     shader.bind();
     
     Texture tex("res/textures.png", "res/textures.json");
+    Renderer::setWorldTextures(&tex);
     tex.bind();
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); /* how alpha pixels get rendered*/
+
+    Player player;
+
+    // INITIALIZATION END
+
 
     Quad q(tex.getTexture("aarush.png"), Vector2(300, 300), Vector2(100, 100));
 
     VertexBuffer vb(q.data,sizeof(Quad::data));
+
     VertexArray vao;
     VertexBufferLayout vbl;
     IndexBuffer ib(q.indices, 6);
@@ -124,22 +97,27 @@ int Game::run() {
 
     float opacity = 1;
     float inc = 0;
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); /* how alpha pixels get rendered*/
-
 
     while (!glfwWindowShouldClose(window)) {
         renderer.clear();
-
+        updateStats();
         glm::mat4 proj = glm::ortho(0.0f, windowDimensions.x, 0.0f, windowDimensions.y, -1.0f, 1.0f);
-        glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(100.0f, 0, 0));
-        glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(-200.0f, 0, 0));
+        glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(200, 200, 0));
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
 
+        model = glm::rotate(model, glm::radians(q.rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, glm::vec3(q.size.x, q.size.y, 1.0f));
+        
+        q.rotation += 0.6;
+        q.data[0].position.x += 0.1;
+        vb.bind();
+        vao.addBuffer(vb, vbl);
         glm::mat4 mvp = proj * view * model;
         shader.setUniformMat4f("u_mvp", mvp);
         renderer.draw(vao, ib, shader);
-
+        player.updatePlayer();
         model = glm::translate(glm::mat4(1.0f), glm::vec3(200.0f, 0, 0));
+        model = glm::scale(model, glm::vec3(q.size.x, q.size.y, 1.0f));
         mvp = proj * view * model;
         shader.setUniformMat4f("u_mvp", mvp);
         renderer.draw(vao, ib, shader);

@@ -1,5 +1,6 @@
 #include "Shader.h"
 #include "Renderer.h"
+#include "spdlog.h"
 
 #include <fstream>
 #include <sstream>
@@ -33,7 +34,7 @@ int Shader::compileShader(GLenum type, const std::string& source) {
 
     }
     else {
-        printf("compiled shader succesfully\n");
+        spdlog::debug("compiled shader ({0}, {1}) succesfully",m_filePath.c_str(), (type == GL_VERTEX_SHADER ? "VERTEX" : "FRAGMENT"));
     }
 
     // TODO: error handling
@@ -46,6 +47,7 @@ Shader::~Shader() {
 }
 
 Shader::Shader(const std::string& filepath) {
+    m_filePath = filepath;
 	std::ifstream stream(filepath);
 
     std::string line;
@@ -84,7 +86,7 @@ Shader::Shader(const std::string& filepath) {
     glCall(glDeleteShader(fragment_shader));
 
     m_renderId = opengl_program;
-    m_filePath = filepath;
+    
     
 }
 

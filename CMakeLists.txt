@@ -27,7 +27,7 @@ add_executable(craftmine
         src/save/SaveSystem.cpp
         src/save/SaveSystem.h
         src/save/SaveSystem.h
- "src/renderer/Shader.h" "src/renderer/Shader.cpp" "dependencies/stb_image/stb_image.h" "dependencies/stb_image/stb_image.cpp" "src/renderer/Texture.h" "src/renderer/Texture.cpp" "src/core/Camera.h" "src/math.h" "src/core/Math.h")
+ "src/renderer/Shader.h" "src/renderer/Shader.cpp" "dependencies/stb_image/stb_image.h" "dependencies/stb_image/stb_image.cpp" "src/renderer/Texture.h" "src/renderer/Texture.cpp" "src/core/Camera.h" "src/math.h" "src/core/Math.h" "src/core/Controller.h" "src/core/Controller.cpp" "src/core/Entity.h" "src/core/Player.h" "src/core/Camera.cpp" "src/core/Entity.cpp" "src/core/Player.cpp" "src/renderer/QuadRenderer.h" "src/renderer/Mesh.h" "src/renderer/Mesh.cpp")
 target_include_directories(craftmine PRIVATE "${CMAKE_SOURCE_DIR}/dependencies/GLFW" PRIVATE "${CMAKE_SOURCE_DIR}/dependencies/GLEW" , PRIVATE "${CMAKE_SOURCE_DIR}/dependencies" , PRIVATE "${CMAKE_SOURCE_DIR}/dependencies/spdlog",PRIVATE "${CMAKE_SOURCE_DIR}/dependencies/stb_image",craftmine PRIVATE "${CMAKE_SOURCE_DIR}/dependencies")
 target_link_libraries(craftmine
         PRIVATE "${CMAKE_SOURCE_DIR}/dependencies/GLEW/glew32s.lib"

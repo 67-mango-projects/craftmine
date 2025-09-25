@@ -1,3 +1,4 @@
+#pragma once
 #include "Buffer.h"
 #include <string>
 #include<unordered_map>

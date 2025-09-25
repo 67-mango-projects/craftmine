@@ -18,7 +18,7 @@ void setup_logger() {
 	spdlog::set_default_logger(logger);
 
 	// Debug configuration
-#if defined(DEBUG)
+#if defined(_DEBUG)
 	spdlog::set_level(spdlog::level::debug);
 #else
 	spdlog::set_level(spdlog::level::info);
