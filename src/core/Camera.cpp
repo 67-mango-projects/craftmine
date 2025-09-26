@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include "Player.h"
 
 void Camera::bindPlayer(Player *p) {
 	m_player = p;

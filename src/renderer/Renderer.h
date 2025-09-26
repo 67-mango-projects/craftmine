@@ -31,6 +31,7 @@ struct Vertex2 {
     inline Vertex2(const Vector2& pos, const Vector2& uv, const Vector3& col)
         : position(pos), texcoord(uv), color(col) {
     }   
+    inline Vertex2() {};
     inline Vertex2(
         GLfloat x, GLfloat y,
         GLfloat xt, GLfloat yt,

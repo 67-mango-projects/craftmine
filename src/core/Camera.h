@@ -1,8 +1,8 @@
 #pragma once
 #include "Math.h"
-#include "Player.h"
 #include <glm/glm.hpp>
 
+class Player;
 class Camera {
 private:
 	inline static Camera *m_currentCamera;

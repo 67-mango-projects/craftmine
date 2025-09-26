@@ -7,8 +7,8 @@ class Player : public Entity {
 private:
 	inline static Player* m_currentPlayer;
 	int m_level;
-	TextureFrame m_sideTexture = Renderer::getWorldTextures()->getTexture("playerside.png");
-	TextureFrame m_frontTexture = Renderer::getWorldTextures()->getTexture("playerfront.png");
+	Mesh* m_sidemesh;
+	Mesh* m_frontmesh;
 public:
 	Player();
 	void renderPlayer();

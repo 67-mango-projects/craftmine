@@ -1,6 +1,6 @@
 #pragma once 
 #include "Math.h"
-#include "../renderer/Renderer.h"
+#include "../renderer/QuadRenderer.h"
 #include<glm/glm.hpp>
 class Entity {
 protected:

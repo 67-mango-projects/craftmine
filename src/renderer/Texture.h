@@ -30,7 +30,7 @@ public:
 	inline int getHeight() { return m_Height; }
 
 	TextureFrame getTexture(const std::string& name);
-
+	std::unordered_map<std::string, TextureFrame> getTextureMap() { return m_textures; }
 private:
 	void loadAtlas(const std::string& atlas);
 };

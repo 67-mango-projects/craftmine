@@ -3,7 +3,8 @@
 #include "../game.h"
 
 Player::Player() : Entity(100, 2, m_model) {
-	m_model.texture = m_frontTexture;
+	m_sidemesh = &QuadRenderer::getMesh("playerside.png");
+	m_frontmesh = &QuadRenderer::getMesh("playerfront.png");
 	m_currentPlayer = this;
 
 	Controller::bindPress(handlePressInput);

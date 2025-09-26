@@ -1,6 +1,7 @@
 #include "Mesh.h"
 #include "../core/Math.h"
 #include "VertexBufferLayout.h"
+#include <spdlog.h>
 
 Mesh::Mesh(TextureFrame texture, const Vertex2(&data)[4], VertexBufferLayout vbl) {
 	m_texture = texture;
