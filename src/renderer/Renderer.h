@@ -16,10 +16,10 @@ void glClearError();
 bool glLogCall(const char* func, const char* file, int line);
 
 struct RendererInfo {
-    VertexArray m_vao;
-    IndexBuffer m_ibo;
+    VertexArray* m_vao;
+    IndexBuffer* m_ibo;
     
-    RendererInfo(VertexArray vao, IndexBuffer ibo) : m_ibo(ibo), m_vao(vao) {
+    RendererInfo(VertexArray* vao, IndexBuffer* ibo) : m_ibo(ibo), m_vao(vao) {
 
     }
 };
@@ -46,8 +46,10 @@ private:
     const Vector2 m_viewPortSize = Vector2(900, 900);
 public:
     void draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
+    void draw(const VertexArray* va, const IndexBuffer* ib, Shader* shader) const;
     void clear() const;
     static void setWorldTextures(Texture* texture) { worldTextures = texture; }
     static Texture* getWorldTextures() { return worldTextures; }
     inline Vector2 getViewPortSize() const { return m_viewPortSize; }
+
 };

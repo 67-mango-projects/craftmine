@@ -99,28 +99,38 @@ int Shader::getUniformLocation(const std::string& name) {
 
     glCall(int location = glGetUniformLocation(m_renderId, name.c_str()));
     if (location == -1) {
-        printf("could not find uniform, %s", name.c_str());
+        spdlog::error("could not find uniform, {0}", name.c_str());
     }
     m_uniformLocationCache[name] = location;
     return location;
 }
 
 void Shader::setUniform1i(const std::string& name, int v1) {
+    glCall(glUseProgram(m_renderId));
     glCall(glUniform1i(getUniformLocation(name), v1));
 }
 
 void Shader::setUniform4f(const std::string& name,
     float x, float y, float z, float w) {
+    glCall(glUseProgram(m_renderId));
     glCall(glUniform4f(getUniformLocation(name), x, y, z, w));
 }
 
 void Shader::setUniformMat4f(const std::string& name,const glm::mat4& matrix) {
+    glCall(glUseProgram(m_renderId));
     glCall(glUniformMatrix4fv(getUniformLocation(name), 1, false, &matrix[0][0]));
 }
 
 void Shader::setUniform1f(const std::string& name, float v1) {
+    glCall(glUseProgram(m_renderId));
     glCall(glUniform1f(getUniformLocation(name), v1));
 }
+
+void Shader::setUniform3f(const std::string& name, float x,float y, float z) {
+    glCall(glUseProgram(m_renderId));
+    glCall(glUniform3f(getUniformLocation(name),x,y,z));
+}
+
 
 void Shader::bind() const {
     glCall(glUseProgram(m_renderId));

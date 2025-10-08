@@ -3,6 +3,8 @@
 #include <glm/glm.hpp>
 
 class Player;
+class Renderer;
+
 class Camera {
 private:
 	inline static Camera *m_currentCamera;
@@ -14,8 +16,10 @@ public:
 	Camera(Player *p);
 	void setZoom(float z) { zoom = z; }
 	void updateCamera();
-	Camera* getCurrentCamera() { return m_currentCamera; }
+	static Camera* getCurrentCamera() { return m_currentCamera; }
+	Vector2 getPosition() const { return m_position; }
 	glm::mat4 getViewMatrix();
+
 private:
 	void bindPlayer(Player *p);
 };	

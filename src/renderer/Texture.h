@@ -2,12 +2,14 @@
 #include "Buffer.h"
 #include <string>
 #include <unordered_map>
+#include "../core/Math.h"
 
 struct TextureFrame {
 	float left, top, right, bottom;
 	TextureFrame() : left(0), top(0), right(0), bottom(0) {} // default constructor
 	TextureFrame(float vleft, float vtop, float vright, float vbottom) : left(vleft), top(vtop), right(vright), bottom(vbottom) {}
 };
+
 
 class Texture {
 private:
@@ -22,6 +24,7 @@ private:
 	int m_Width, m_Height, m_BPP;
 public:
 	Texture(const std::string& path, const std::string& atlaspath = "");
+	
 	~Texture();
 	void bind(unsigned int slot = 0) const;
 	void unbind() const;
@@ -34,3 +37,5 @@ public:
 private:
 	void loadAtlas(const std::string& atlas);
 };
+
+

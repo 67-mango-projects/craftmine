@@ -1,7 +1,7 @@
 #include "Renderer.h"
 #include "Shader.h"
 #include<iostream>
-
+#include <spdlog.h>
 void glClearError() {
     while (glGetError() != GL_NO_ERROR);
 
@@ -25,6 +25,15 @@ void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const Shader& 
     glCall(glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_INT, nullptr));
 }
 
+void Renderer::draw(const VertexArray* va, const IndexBuffer* ib, Shader* shader) const {
+    shader->bind();
+    va->bind();
+    ib->bind();
+    
+    glCall(glDrawElements(GL_TRIANGLES, ib->getCount(), GL_UNSIGNED_INT, nullptr));
+}
+
+
 void Renderer::clear() const {
-    glCall(glClear(GL_COLOR_BUFFER_BIT))
+    glCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }

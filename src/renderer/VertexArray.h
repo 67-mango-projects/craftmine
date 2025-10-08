@@ -13,6 +13,6 @@ public:
 
 	void bind() const;
 	void unbind() const;
-
+	unsigned int getRenderId() const { return m_renderId; }
 	void addBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout);
 };

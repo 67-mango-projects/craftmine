@@ -4,6 +4,17 @@
 #include <sinks/basic_file_sink.h>
 #include "game.h"
 
+
+
+/*
+* MY COOL GAME FOR DIGI TECH, NO GAME ENGINE OR GAME LIBRARY ONLY OPENGL LIBRARIES
+* not gonna add much comments since it takes too long, and most of the time the code is self explanatory
+* or is too complicated to fit into a comment
+*/
+
+
+
+// NOT MINE MY FRIEND IMPLEMENTED THIS COOL LOGGING SYSTEM FOR ME
 /**
  * Set up the global logger using spdlog.
  * Logs will be output to both the console and a file named "app.log".
@@ -59,4 +70,4 @@ int main()
 
 	Game a;
 	return a.run();
-}
+ }

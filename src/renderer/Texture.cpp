@@ -4,7 +4,10 @@
 #include "nlohmann/json.hpp"
 #include "spdlog.h"
 
+
 #include <fstream>
+
+
 using json = nlohmann::json;
 
 Texture::Texture(const std::string& path, const std::string& atlaspath) : m_filePath(path), m_atlasFilePath(atlaspath) {
@@ -12,7 +15,7 @@ Texture::Texture(const std::string& path, const std::string& atlaspath) : m_file
 	glCall(glBindTexture(GL_TEXTURE_2D, m_renderId));
 
 	stbi_set_flip_vertically_on_load(true);
-	m_localBuffer = stbi_load(path.c_str(), &m_Width, &m_Height, &m_BPP, 4 /* desired channels is how many channels we want per pixel, that is RGBA so 4*/);
+	m_localBuffer = stbi_load(path.c_str(), &m_Width, &m_Height, &m_BPP, STBI_rgb_alpha /* desired channels is how many channels we want per pixel, that is RGBA so 4*/);
 
 	glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER /*how the texture will be resampled down if sized down*/, GL_NEAREST));
 	glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER /*how the texture will be resampled down if sized up*/, GL_NEAREST));
@@ -68,8 +71,9 @@ void Texture::loadAtlas(const std::string& atlas) {
 	}
 }
 
+
 void Texture::bind(unsigned int slot) const {
-	glActiveTexture(GL_TEXTURE0 + slot);
+    glCall(glActiveTexture(GL_TEXTURE0 + slot));
 	glCall(glBindTexture(GL_TEXTURE_2D, m_renderId));
 }
 void Texture::unbind() const {

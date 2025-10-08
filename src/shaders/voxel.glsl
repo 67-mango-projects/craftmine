@@ -21,12 +21,28 @@ void main() {
 #version 330 core
 
 uniform sampler2D u_texture;
+uniform bool u_useTexture;
 uniform float u_opacity;
+
+uniform float u_lightLevel;
+uniform vec3 u_nightColor;
+uniform vec3 u_dayColor;
+
+uniform vec4 u_color;
+
 out vec4 color;
+
 in vec3 trianglecolor;
 in vec2 v_texCoord;
 
-void main() {
-	vec4 texColor = texture(u_texture,v_texCoord);
-   color = texColor;
-};
+void main()
+{
+    vec4 baseColor = u_useTexture ? texture(u_texture, v_texCoord) : u_color;
+
+    vec3 lighting = mix(u_nightColor, u_dayColor, u_lightLevel);
+
+    vec3 finalRGB = baseColor.rgb * u_color.rgb * lighting;
+    float finalAlpha = baseColor.a * u_color.a * u_opacity;
+
+    color = vec4(finalRGB, finalAlpha);
+}
