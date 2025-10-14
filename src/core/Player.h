@@ -10,7 +10,7 @@ class Player : public Entity {
 	
 private:
 	inline static Player* m_currentPlayer;
-	float m_mana = 10;
+	float m_mana = 10; // unused
 	int m_level = 0;
 	float m_baseMaxHealth = 100;
 	float m_maxHealth;

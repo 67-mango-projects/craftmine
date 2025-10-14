@@ -101,7 +101,7 @@ void World::updateWorld(float dt) {
         Vector2 spawnPos = Camera::getCurrentCamera()->getPosition() + Vector2(std::cos(angle), std::sin(angle)) * radius;
         Entity::spawn(EntityType::DRAGON, spawnPos);
     }
-    else if (Player::getCurrentPlayer()->getPlayerLevel() % 50 == 0 && bossSpawnedAtLevel != Player::getCurrentPlayer()->getPlayerLevel() && m_day > 10 == 1 && m_dimension== DIMENSION::NETHER) {
+    else if (Player::getCurrentPlayer()->getPlayerLevel() % 50 == 0 && bossSpawnedAtLevel != Player::getCurrentPlayer()->getPlayerLevel() && m_day > 10 && m_dimension== DIMENSION::NETHER) {
         bossSpawnedAtLevel = Player::getCurrentPlayer()->getPlayerLevel();
         float angle = randomRange(0.0f, 2.0f * M_PI);
         float radius = randomRange(300.0f, 800.0f);
