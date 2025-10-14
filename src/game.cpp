@@ -137,7 +137,7 @@ int Game::run() {
     Renderer renderer;
 
     Vector2 windowDimensions = renderer.getViewPortSize();
-    GLFWwindow* window = glfwCreateWindow(windowDimensions.x, windowDimensions.y, "fuck ass game", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(windowDimensions.x, windowDimensions.y, "cool ahh game", NULL, NULL);
 
     if (!window)
     {
